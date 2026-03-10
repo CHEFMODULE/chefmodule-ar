@@ -20,15 +20,19 @@ const{renderer,scene,camera}=mindar;
 const light=new THREE.HemisphereLight(0xffffff,0x444444,1.5);scene.add(light);
 const dLight=new THREE.DirectionalLight(0xffffff,1);dLight.position.set(0,1,1);scene.add(dLight);
 const anchor=mindar.addAnchor(0);
+const testCube=new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.3),new THREE.MeshBasicMaterial({color:0xff0000}));
+testCube.position.z=0.2;
+anchor.group.add(testCube);
 const loader=new GLTFLoader();
 let modelLoaded=false;
-loader.load("projekt.glb?v=1773143782170",function(gltf){
+loader.load("projekt.glb?v=1773144379853",function(gltf){
   const model=gltf.scene;
   model.scale.setScalar(SCALE);
   model.position.y=Y_OFF;
+  model.position.z=0.5;
   anchor.group.add(model);
   modelLoaded=true;
-  document.getElementById("info").textContent="GLB geladen. Marker suchen...";
+  document.getElementById("info").textContent="GLB geladen (S="+SCALE.toFixed(1)+", Y="+Y_OFF.toFixed(2)+"). Marker suchen...";
 },undefined,function(err){document.getElementById("info").textContent="GLB Fehler: "+err.message});
 anchor.onTargetFound=function(){document.getElementById("info").style.opacity="1";document.getElementById("info").textContent=modelLoaded?"Marker erkannt!":"GLB wird noch geladen..."};
 anchor.onTargetLost=function(){document.getElementById("info").style.opacity="1";document.getElementById("info").textContent="Kamera auf den Marker richten..."};
