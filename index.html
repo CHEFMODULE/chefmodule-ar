@@ -13,24 +13,25 @@ import * as THREE from "three";
 import {MindARThree} from "mindar-image-three";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
 const SCALE=3.3670;
-const Y_OFF=1.1668;
+const Y_OFF=1.1145;
 const container=document.getElementById("ar-container");
-const mindar=new MindARThree({container,imageTargetSrc:"marker.mind?v=1773143644016"});
+const mindar=new MindARThree({container,imageTargetSrc:"marker.mind",filterMinCF:0.0001,filterBeta:0.001,warmupTolerance:5,missTolerance:5});
 const{renderer,scene,camera}=mindar;
 const light=new THREE.HemisphereLight(0xffffff,0x444444,1.5);scene.add(light);
 const dLight=new THREE.DirectionalLight(0xffffff,1);dLight.position.set(0,1,1);scene.add(dLight);
 const anchor=mindar.addAnchor(0);
 const loader=new GLTFLoader();
-loader.load("projekt.glb?v=1773143644016",function(gltf){
+let modelLoaded=false;
+loader.load("projekt.glb?v=1773143782170",function(gltf){
   const model=gltf.scene;
   model.scale.setScalar(SCALE);
   model.position.y=Y_OFF;
   anchor.group.add(model);
-  document.getElementById("info").textContent="Marker erkannt!";
-  setTimeout(function(){document.getElementById("info").style.opacity="0"},2000);
-},undefined,function(err){document.getElementById("info").textContent="Fehler beim Laden: "+err.message});
-anchor.onTargetFound=function(){document.getElementById("info").style.opacity="1";document.getElementById("info").textContent="Marker erkannt!"};
+  modelLoaded=true;
+  document.getElementById("info").textContent="GLB geladen. Marker suchen...";
+},undefined,function(err){document.getElementById("info").textContent="GLB Fehler: "+err.message});
+anchor.onTargetFound=function(){document.getElementById("info").style.opacity="1";document.getElementById("info").textContent=modelLoaded?"Marker erkannt!":"GLB wird noch geladen..."};
 anchor.onTargetLost=function(){document.getElementById("info").style.opacity="1";document.getElementById("info").textContent="Kamera auf den Marker richten..."};
-mindar.start();
+mindar.start().catch(function(e){document.getElementById("info").textContent="AR Fehler: "+e.message});
 </script>
 </body></html>
