@@ -15,13 +15,13 @@ import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
 const SCALE=3.3670;
 const Y_OFF=1.1668;
 const container=document.getElementById("ar-container");
-const mindar=new MindARThree({container,imageTargetSrc:"marker.mind?v=1773142642613"});
+const mindar=new MindARThree({container,imageTargetSrc:"marker.mind?v=1773143644016"});
 const{renderer,scene,camera}=mindar;
 const light=new THREE.HemisphereLight(0xffffff,0x444444,1.5);scene.add(light);
 const dLight=new THREE.DirectionalLight(0xffffff,1);dLight.position.set(0,1,1);scene.add(dLight);
 const anchor=mindar.addAnchor(0);
 const loader=new GLTFLoader();
-loader.load("projekt.glb?v=1773142642613",function(gltf){
+loader.load("projekt.glb?v=1773143644016",function(gltf){
   const model=gltf.scene;
   model.scale.setScalar(SCALE);
   model.position.y=Y_OFF;
