@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHEFMODULE — Design Preview</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Manrope',sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+
+/* Password Gate */
+#pw-gate{position:fixed;inset:0;background:#0d1117;z-index:9999;display:flex;align-items:center;justify-content:center;}
+#pw-gate.hidden{display:none;}
+#pw-box{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:40px;max-width:360px;width:90%;text-align:center;}
+#pw-box img{height:28px;margin-bottom:16px;}
+#pw-box h2{font-size:16px;font-weight:700;color:#e6edf3;margin-bottom:4px;}
+#pw-box p{font-size:12px;color:#6e7681;margin-bottom:20px;}
+#pw-input{width:100%;padding:10px 14px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;font-size:13px;font-family:'Manrope',sans-serif;outline:none;}
+#pw-input:focus{border-color:#7D1E3F;box-shadow:0 0 0 2px rgba(125,30,63,0.2);}
+#pw-btn{width:100%;margin-top:10px;padding:10px;background:#7D1E3F;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Manrope',sans-serif;}
+#pw-btn:hover{background:#6a1a35;}
+#pw-err{color:#f85149;font-size:11px;margin-top:8px;display:none;}
+
+/* Main */
+#main{display:none;}
+#main.visible{display:block;}
+
+/* Tab bar */
+.tab-bar{display:flex;gap:0;background:#161b22;padding:8px 16px 0;border-bottom:1px solid #30363d;}
+.tab-btn{padding:10px 24px;font-size:13px;font-weight:600;color:#6e7681;cursor:pointer;border:none;background:none;font-family:'Manrope',sans-serif;border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn:hover{color:#c9d1d9;}
+.tab-btn.active{color:#7D1E3F;border-bottom-color:#7D1E3F;}
+
+/* Content */
+.tab-content{display:none;padding:20px;}
+.tab-content.active{display:block;}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+  <div id="pw-box">
+    <img src="CHEFMODULE neu 15_12_25 weiss.png" alt="CHEFMODULE" onerror="this.outerHTML='<div style=font-size:20px;font-weight:700;color:#e6edf3;margin-bottom:16px>CHEFMODULE</div>'">
+    <h2>Design Preview</h2>
+    <p>Zugang nur mit Passwort.</p>
+    <input type="password" id="pw-input" placeholder="Passwort eingeben..." autofocus>
+    <button id="pw-btn" onclick="checkPw()">Zugang</button>
+    <div id="pw-err">Falsches Passwort.</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('I')">Shop-Elemente</button>
+    <button class="tab-btn" onclick="switchTab('J')">Produktseite</button>
+  </div>
+  <div id="tab-I" class="tab-content active">
+    <div id="typoI-container"></div>
+  </div>
+  <div id="tab-J" class="tab-content">
+    <div id="typoJ-container"></div>
+  </div>
+</div>
+
+<script>
+// Password check
+function checkPw(){
+  var v = document.getElementById('pw-input').value;
+  if(v === 'chefmodule@2026'){
+    document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('main').classList.add('visible');
+    renderTypoI();
+    renderTypoJ();
+  } else {
+    document.getElementById('pw-err').style.display='block';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkPw();});
+
+// Tab switching
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== RENDER TYPO I =====
+function renderTypoI() {
+  var container = document.getElementById('typoI-container');
+  if (!container) return;
+  var C = { burg:'#7D1E3F', bg:'#1A1D23', steel:'#21252C', steel2:'#3A3F4A', txt:'#F2F2F2', txtM:'rgba(242,242,242,0.5)', white:'#FFFFFF', gray1:'#F5F5F5', gray2:'#E0E0E0', gray3:'#9E9E9E', dark:'#333333' };
+  var icoBase = '070 Marke/Icons/PNG/';
+  var xBase = '010 Produktdaten/';
+  var ico = {
+    cart:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>',
+    orbit:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><path d="M10.4 21.9a10 10 0 0 0 9.941-15.416"/><path d="M13.5 2.1a10 10 0 0 0-9.841 15.416"/></svg>',
+    search:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+    truck:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18h2a1 1 0 0 0 1-1v-3.28a1 1 0 0 0-.684-.948l-1.923-.641a1 1 0 0 1-.684-.949V8a1 1 0 0 1 1-1h1.382a1 1 0 0 1 .894.553l1.448 2.894A1 1 0 0 0 20.382 11H22"/><circle cx="7" cy="18" r="2"/><circle cx="19" cy="18" r="2"/></svg>',
+    check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    chevDown:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+    chevRight:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+    x:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+    info:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+    mail:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+    phone:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    pin:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+    minus:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>',
+    plus:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>',
+    eye:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
+    download:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+    ar:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4"/><path d="m6.3 7.45-2.83 1.64"/><path d="m20.53 9.09-2.83-1.64"/><path d="M12 21v-4"/><path d="m6.3 16.55-2.83-1.64"/><path d="m20.53 14.91-2.83 1.64"/><circle cx="12" cy="12" r="4"/></svg>',
+    cube:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-9 5-9-5V8l9-5 9 5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v9"/></svg>',
+  };
+  var badgeItems = [['Edelstahl V2A','cart'],['Sp\u00fclmaschinenfest','download'],['Werkzeuglos','cube'],['Wandmontage','ar']];
+  var pngIcons = [{file:'Edelstahl SUS 304.png',label:'Edelstahl SUS304'},{file:'Sp\u00fclmaschinentauglich.png',label:'Sp\u00fclmaschinenfest'},{file:'Kugelsperrbolzen.png',label:'Kugelsperrbolzen BSF'},{file:'Wandmontage_Variante_1.png',label:'Wandmontage'},{file:'NdFeB.png',label:'NdFeB Magnet'},{file:'M8 Daumenschraube.png',label:'M8 Daumenschraube'}];
+  var xBilder = [{src:xBase+'030 Module/Typ 440/M044_0002/Bilder/M044 0002_X1_Folienspender.png',label:'Folienspender'},{src:xBase+'030 Module/Typ 440/M044_0003/Bilder/M044 0003_X1_Gew\u00fcrzablage 440.png',label:'Gew\u00fcrzablage 440'},{src:xBase+'080 POLE/P001_0004/Bilder/P001 0004_X1_POLE 38 Grundmodul.png',label:'POLE 38'},{src:xBase+'030 Module/Typ 440/M044_0001/Bilder/M044 0001_X1_EP 440.png',label:'EP 440'}];
+
+  function sec(title,dark) {
+    var bg = dark ? C.bg : C.white;
+    var bd = dark ? C.steel : C.gray2;
+    return '<div style="background:'+C.bg+';border-radius:8px 8px 0 0;padding:10px 16px;border:1px solid '+C.steel+';border-bottom:2px solid '+C.burg+';margin-top:16px;"><div style="font-size:11px;font-weight:700;color:'+C.txt+';letter-spacing:.5px;text-transform:uppercase;">'+title+'</div></div>'
+      + '<div style="background:'+bg+';border-radius:0 0 8px 8px;padding:14px 16px;border:1px solid '+bd+';border-top:none;margin-bottom:16px;">';
+  }
+  var e = '</div>';
+
+  var html = '<div style="font-family:\'Manrope\',sans-serif;">'
+    + '<div style="font-size:18px;font-weight:700;color:#e6edf3;margin-bottom:4px;">Shop-Elemente \u2014 Alle Entscheidungen</div>'
+    + '<div style="font-size:12px;color:#6e7681;margin-bottom:16px;">Finale Zusammenstellung aller Shop-Elemente.</div>';
+
+  // 0. FARBPALETTE
+  html += sec('Farbpalette',true)
+    + '<div style="display:flex;gap:16px;flex-wrap:wrap;">'
+    + [[C.burg,'Burgund','#7D1E3F','Akzente, Hover'],[C.bg,'Anthrazit','#1A1D23','Sidebar, Modal'],[C.steel,'Steel','#21252C','Header, Footer'],[C.steel2,'Steel 2','#3A3F4A','Sek. Borders'],[C.txt,'Neutral hell','#F2F2F2','Text auf dunkel'],[C.white,'Wei\u00df','#FFFFFF','Seiten-BG'],[C.gray1,'Hellgrau','#F5F5F5','Badges, Karten'],[C.dark,'Dunkel','#333333','Text auf hell']].map(function(a){
+      return '<div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;background:'+a[0]+';border-radius:6px;border:1px solid '+(a[0]==='#FFFFFF'?'#ccc':a[0])+';flex-shrink:0;"></div><div><div style="font-size:10px;font-weight:600;color:#c9d1d9;">'+a[1]+'</div><div style="font-size:8px;color:#6e7681;font-family:monospace;">'+a[2]+'</div><div style="font-size:8px;color:#484f58;">'+a[3]+'</div></div></div>';
+    }).join('') + '</div>' + e;
+
+  // 1. HEADER
+  html += sec('Header / Navigation',true)
+    + '<div style="background:'+C.steel+';border-radius:6px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;">'
+    + '<div style="display:flex;align-items:center;gap:20px;">'
+    + '<img src="CHEFMODULE neu 15_12_25 weiss.png" style="height:22px;object-fit:contain;" onerror="this.outerHTML=\'<span style=font-size:15px;font-weight:700;color:#F2F2F2>CHEFMODULE</span>\'">'
+    + '<div style="width:2px;height:22px;background:'+C.steel2+';"></div>'
+    + '<div style="display:flex;gap:24px;">'
+    + ['PRODUKTE','3D KONFIGURATOR','KNOW-HOW','DOWNLOADS','\u00dcBER UNS'].map(function(t){return '<a style="font-size:12px;font-weight:600;color:'+C.txtM+';text-decoration:none;cursor:pointer;letter-spacing:.5px;">'+t+'</a>';}).join('')
+    + '</div></div>'
+    + '<div style="display:flex;align-items:center;gap:14px;">'
+    + '<span style="color:'+C.txtM+';">'+ico.search+'</span>'
+    + '<span style="position:relative;color:'+C.txtM+';cursor:pointer;">'+ico.cart+'<span style="position:absolute;top:-5px;right:-7px;background:'+C.burg+';color:#fff;font-size:7px;font-weight:700;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;">3</span></span>'
+    + '<div style="width:1px;height:18px;background:'+C.steel2+';"></div>'
+    + '<a style="font-size:10px;font-weight:600;color:'+C.txtM+';text-decoration:none;cursor:pointer;letter-spacing:.3px;">LOGIN</a>'
+    + '</div></div>' + e;
+
+  // 2-19: remaining sections (same as theme-B.html renderTypoI)
+  html += sec('Breadcrumbs')
+    + '<div style="font-size:11px;color:'+C.gray3+';display:flex;align-items:center;gap:4px;">'
+    + '<a style="color:'+C.burg+';text-decoration:none;">Home</a>'+ico.chevRight
+    + '<a style="color:'+C.burg+';text-decoration:none;">Schienen</a>'+ico.chevRight
+    + '<span style="color:'+C.dark+';font-weight:600;">Schiene 110 - BSF 550</span></div>' + e;
+
+  html += sec('Badges \u2014 Outline, graue Icons')
+    + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    + badgeItems.map(function(a){return '<div style="display:flex;align-items:center;gap:6px;background:'+C.white+';padding:7px 12px;border-radius:6px;font-size:11px;color:'+C.dark+';border:1px solid '+C.gray2+';"><span style="color:'+C.gray3+';">'+ico[a[1]]+'</span> '+a[0]+'</div>';}).join('')
+    + '</div>' + e;
+
+  html += sec('Badges dunkel \u2014 beide Varianten',true)
+    + '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:6px;">Ohne Rahmen:</div>'
+    + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">'
+    + badgeItems.map(function(a){return '<div style="display:flex;align-items:center;gap:6px;background:'+C.steel+';padding:7px 12px;border-radius:6px;font-size:11px;color:'+C.txt+';border:1px solid '+C.steel2+';"><span style="color:'+C.txt+';">'+ico[a[1]]+'</span> '+a[0]+'</div>';}).join('')
+    + '</div>'
+    + '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:6px;">Mit Burgund-Rahmen (1px):</div>'
+    + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    + badgeItems.map(function(a){return '<div style="display:flex;align-items:center;gap:6px;background:'+C.steel+';padding:7px 12px;border-radius:6px;font-size:11px;color:'+C.txt+';border:1px solid '+C.burg+';"><span style="color:'+C.txt+';">'+ico[a[1]]+'</span> '+a[0]+'</div>';}).join('')
+    + '</div>' + e;
+
+  html += sec('Buttons + Konfigurator')
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;">'
+    + '<button class="typoI-btn" style="background:'+C.gray1+';color:'+C.dark+';border:1px solid '+C.gray2+';padding:9px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:\'Manrope\',sans-serif;transition:all .15s;"><span style="color:'+C.burg+';">'+ico.cart+'</span> In den Warenkorb</button>'
+    + '<button style="background:'+C.white+';color:'+C.burg+';border:2px solid '+C.burg+';padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:\'Manrope\',sans-serif;">'+ico.orbit+' + 3D Konfigurator</button>'
+    + '</div>'
+    + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    + [['E-Mail','mail'],['Anrufen','phone'],['AR','ar'],['PDF','download']].map(function(a){return '<button class="typoI-btn" style="background:'+C.gray1+';color:'+C.dark+';border:1px solid '+C.gray2+';padding:7px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:\'Manrope\',sans-serif;transition:all .15s;"><span style="color:'+C.burg+';">'+ico[a[1]]+'</span> '+a[0]+'</button>';}).join('')
+    + '</div>' + e;
+
+  html += sec('Produktkarten')
+    + '<div style="font-size:10px;font-weight:700;color:'+C.dark+';margin-bottom:8px;">A: Mit Preis (f\u00fcr sp\u00e4ter)</div>'
+    + '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">'
+    + [['Schiene 110 BSF 550','Schienen BSF','89,90','BESTSELLER'],['Folienspender','Module 440','59,90','NEU']].map(function(p){
+      return '<div class="typoI-card" style="width:150px;border:1px solid '+C.gray2+';border-radius:8px;overflow:hidden;cursor:pointer;background:'+C.white+';">'
+        + '<div style="height:110px;background:'+C.gray1+';position:relative;display:flex;align-items:center;justify-content:center;">'
+        + '<span style="color:'+C.gray3+';font-size:9px;">Produktbild</span>'
+        + (p[3]?'<div style="position:absolute;top:6px;left:6px;background:'+C.burg+';color:#fff;font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;">'+p[3]+'</div>':'')
+        + '</div><div style="padding:8px 10px;">'
+        + '<div style="font-size:10px;font-weight:600;color:'+C.dark+';">'+p[0]+'</div>'
+        + '<div style="font-size:8px;color:'+C.gray3+';margin:2px 0 4px;">'+p[1]+'</div>'
+        + '<div style="font-size:12px;font-weight:700;color:'+C.dark+';">'+p[2]+' EUR</div>'
+        + '</div></div>';
+    }).join('') + '</div>'
+    + '<div style="font-size:10px;font-weight:700;color:'+C.dark+';margin-bottom:8px;">B: Nur Artikelname (B2B aktuell)</div>'
+    + '<div style="display:flex;gap:12px;flex-wrap:wrap;">'
+    + [['Schiene 110 BSF 550','Schienen BSF','BESTSELLER'],['EP 440','Module 440',''],['Gew\u00fcrzablage 440','Module 440',''],['Folienspender','Module 440','NEU']].map(function(p){
+      return '<div class="typoI-card" style="width:150px;border:1px solid '+C.gray2+';border-radius:8px;overflow:hidden;cursor:pointer;background:'+C.white+';">'
+        + '<div style="height:110px;background:'+C.gray1+';position:relative;display:flex;align-items:center;justify-content:center;">'
+        + '<span style="color:'+C.gray3+';font-size:9px;">Produktbild</span>'
+        + (p[2]?'<div style="position:absolute;top:6px;left:6px;background:'+C.burg+';color:#fff;font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;">'+p[2]+'</div>':'')
+        + '</div><div style="padding:8px 10px;">'
+        + '<div style="font-size:10px;font-weight:600;color:'+C.dark+';">'+p[0]+'</div>'
+        + '<div style="font-size:8px;color:'+C.gray3+';margin-top:2px;">'+p[1]+'</div>'
+        + '</div></div>';
+    }).join('') + '</div>' + e;
+
+  html += sec('Popup / Modal',true)
+    + '<div style="background:'+C.bg+';border:2px solid '+C.burg+';border-radius:8px;padding:18px;max-width:320px;">'
+    + '<div style="font-size:13px;font-weight:700;color:'+C.txt+';margin-bottom:6px;">Anfrage senden</div>'
+    + '<div style="font-size:11px;color:'+C.txtM+';margin-bottom:12px;">Konfiguration als PDF an unser Team.</div>'
+    + '<div style="background:'+C.steel+';border-radius:6px;padding:7px 10px;font-size:11px;color:'+C.txt+';margin-bottom:8px;">name@firma.de</div>'
+    + '<div style="display:flex;gap:8px;">'
+    + '<button style="flex:1;background:'+C.burg+';color:#fff;border:none;padding:7px;border-radius:6px;font-size:11px;font-weight:600;font-family:\'Manrope\',sans-serif;">Senden</button>'
+    + '<button style="flex:1;background:none;color:'+C.txtM+';border:1px solid '+C.steel2+';padding:7px;border-radius:6px;font-size:11px;font-family:\'Manrope\',sans-serif;">Abbrechen</button>'
+    + '</div></div>' + e;
+
+  html += '<div style="max-width:50%;">' + sec('Vorlagen',true)
+    + '<div style="display:flex;flex-direction:column;gap:8px;">'
+    + ['VORLAGE 1 \u2014 SCHIENENBERECHNUNG|Schienen berechnen.','VORLAGE 2 \u2014 ARBEITSINSEL|Freistehende Wand.','VORLAGE 3 \u2014 KONSOLEN|Mit Stahltr\u00e4gern.'].map(function(v){
+      var p=v.split('|');
+      return '<div class="typoI-vorlage" style="display:flex;gap:10px;padding:10px;border:2px solid '+C.steel2+';border-radius:6px;cursor:pointer;transition:all .15s;align-items:center;">'
+        + '<div style="width:70px;height:45px;background:'+C.steel+';border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><span style="color:'+C.txtM+';font-size:8px;">Bild</span></div>'
+        + '<div><div style="font-size:10px;font-weight:700;color:'+C.txt+';margin-bottom:3px;">'+p[0]+'</div>'
+        + '<div style="font-size:8px;color:'+C.txtM+';">'+p[1]+'</div></div></div>';
+    }).join('')
+    + '</div>' + e + '</div>';
+
+  html += sec('Produkt-Icons')
+    + '<div style="display:flex;gap:16px;flex-wrap:wrap;">'
+    + pngIcons.map(function(ic){return '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:70px;"><img src="'+icoBase+ic.file+'" style="width:36px;height:36px;object-fit:contain;" onerror="this.style.display=\'none\'"><div style="font-size:8px;color:'+C.dark+';text-align:center;line-height:1.3;">'+ic.label+'</div></div>';}).join('')
+    + '</div>' + e;
+
+  html += sec('Bild-Badges: Bestseller + Praxisbeispiel')
+    + '<div style="display:flex;gap:12px;flex-wrap:wrap;">'
+    + [{src:xBase+'010 Schienen BSF/BF11_2550/Bilder/BF11 2550_P1_Schiene 110 - BSF 550.png'},{src:xBase+'030 Module/Typ 440/M044_0002/Bilder/M044 0002_P1_Folienspender.png'}].map(function(x){
+      return '<div style="width:170px;height:130px;border-radius:8px;position:relative;border:1px solid '+C.gray2+';overflow:hidden;background:'+C.gray1+';">'
+        + '<img src="'+x.src+'" style="width:100%;height:100%;object-fit:contain;padding:8px;" onerror="this.style.display=\'none\'">'
+        + '<div style="position:absolute;top:7px;left:7px;background:'+C.burg+';color:#fff;font-size:8px;font-weight:700;padding:2px 8px;border-radius:4px;">BESTSELLER</div></div>';
+    }).join('')
+    + xBilder.slice(2).map(function(x){
+      return '<div style="width:170px;height:130px;border-radius:8px;position:relative;border:1px solid '+C.gray2+';overflow:hidden;background:'+C.gray1+';">'
+        + '<img src="'+x.src+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">'
+        + '<div style="position:absolute;top:7px;left:7px;background:rgba(26,29,35,0.40);color:#fff;font-size:8px;font-weight:700;padding:2px 8px;border-radius:4px;display:flex;align-items:center;gap:3px;">'+ico.eye+' PRAXISBEISPIEL</div></div>';
+    }).join('')
+    + '</div>' + e;
+
+  html += sec('Footer',true)
+    + '<div style="display:flex;gap:36px;flex-wrap:wrap;margin-bottom:16px;">'
+    + '<div><div style="font-size:10px;font-weight:700;color:'+C.txt+';margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Service</div>'
+    + ['3D Konfigurator','Bohrschablonen','FAQ','Kontakt'].map(function(t){return '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:3px;">'+t+'</div>';}).join('')
+    + '</div>'
+    + '<div><div style="font-size:10px;font-weight:700;color:'+C.txt+';margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Kontakt</div>'
+    + '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:3px;">'+ico.mail+' info@chefmodule.com</div>'
+    + '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:3px;">'+ico.phone+' +49 123 456 789</div>'
+    + '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:3px;">'+ico.pin+' Ballermann, Mallorca</div>'
+    + '</div></div>'
+    + '<div style="border-top:1px solid '+C.steel+';padding-top:10px;display:flex;justify-content:space-between;font-size:9px;color:'+C.steel2+';">'
+    + '<span>\u00a9 2026 CHEFMODULE</span>'
+    + '<div style="display:flex;gap:10px;color:'+C.txtM+';">Impressum \u00b7 Datenschutz \u00b7 AGB</div></div>' + e;
+
+  html += '</div>';
+  container.innerHTML = html;
+
+  // Hover effects
+  container.querySelectorAll('.typoI-btn').forEach(function(el){
+    el.addEventListener('mouseenter',function(){el.style.borderColor=C.burg;el.style.background=C.gray2;});
+    el.addEventListener('mouseleave',function(){el.style.borderColor=C.gray2;el.style.background=C.gray1;});
+  });
+  container.querySelectorAll('.typoI-vorlage').forEach(function(el){
+    el.addEventListener('mouseenter',function(){el.style.borderColor=C.burg;el.style.background='rgba(128,0,32,.06)';});
+    el.addEventListener('mouseleave',function(){el.style.borderColor=C.steel2;el.style.background='transparent';});
+  });
+}
+
+// ===== RENDER TYPO J =====
+function renderTypoJ() {
+  var container = document.getElementById('typoJ-container');
+  if (!container) return;
+  var C = { burg:'#7D1E3F', bg:'#1A1D23', steel:'#21252C', steel2:'#3A3F4A', txt:'#F2F2F2', txtM:'rgba(242,242,242,0.5)', white:'#FFFFFF', gray1:'#F5F5F5', gray2:'#E0E0E0', gray3:'#9E9E9E', dark:'#333333' };
+  var xBase = '010 Produktdaten/';
+  var icoBase = '070 Marke/Icons/PNG/';
+  var ico = {
+    cart:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>',
+    orbit:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><path d="M10.4 21.9a10 10 0 0 0 9.941-15.416"/><path d="M13.5 2.1a10 10 0 0 0-9.841 15.416"/></svg>',
+    search:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+    check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    chevDown:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+    chevRight:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+    mail:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+    phone:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    pin:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+    download:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+    ar:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4"/><path d="m6.3 7.45-2.83 1.64"/><path d="m20.53 9.09-2.83-1.64"/><path d="M12 21v-4"/><path d="m6.3 16.55-2.83-1.64"/><path d="m20.53 14.91-2.83 1.64"/><circle cx="12" cy="12" r="4"/></svg>',
+    cube:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-9 5-9-5V8l9-5 9 5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v9"/></svg>',
+    eye:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  };
+
+  // Sidebar Module items
+  var sidebarModules = [
+    {id:'M044 0001',name:'EP 440',img:'030 Module/Typ 440/M044_0001/Bilder/M044 0001_P1_PH 440.png'},
+    {id:'M044 0002',name:'Folienspender',img:'030 Module/Typ 440/M044_0002/Bilder/M044 0002_P1_Folienspender.png'},
+    {id:'M044 0003',name:'Gew\u00fcrzablage 440',img:'030 Module/Typ 440/M044_0003/Bilder/M044 0003_P1_Gewuerzablage 440.png'},
+    {id:'M044 0004',name:'Stabmagnet 440',img:'030 Module/Typ 440/M044_0004/Bilder/M044 0004_P1_Stabmagnet 440.png'},
+    {id:'M044 0005',name:'Bonschiene',img:'030 Module/Typ 440/M044_0005/Bilder/M044 0005_P1_Bonschiene.png'},
+    {id:'M044 0007',name:'Box-Modul 440',img:'050 Box Module/M044_0007/Bilder/M044 0007_P1_Box-Modul 440.png',active:true},
+    {id:'M044 0008',name:'Magnettafel 440',img:'030 Module/Typ 440/M044_0008/Bilder/M044 0008_P1_Magnettafel 440.png'},
+    {id:'M044 0101',name:'UNI Small 505',img:'030 Module/Typ 440/M044_0101/Bilder/M044 0101_P1_UNI Small 505.png'},
+  ];
+
+  var prodImg = {
+    p1: xBase+'050 Box Module/M044_0007/Bilder/M044 0007_P1_Box-Modul 440.png',
+    x1: xBase+'050 Box Module/M044_0007/Bilder/M044 0007_X1_Box-Modul 440.png',
+    x2: xBase+'050 Box Module/M044_0007/Bilder/M044 0007_X2_Box-Modul 440.png',
+  };
+
+  var pngBadges = [
+    {file:'Edelstahl SUS 304.png',label:'Edelstahl SUS304'},
+    {file:'Sp\u00fclmaschinentauglich.png',label:'Sp\u00fclmaschinenfest'},
+    {file:'M8 Daumenschraube.png',label:'M8 Daumenschraube'},
+    {file:'Wandmontage_Variante_1.png',label:'Wandmontage'},
+  ];
+
+  // Sidebar chevrons
+  var chevDown = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.4;flex-shrink:0;"><path d="m6 9 6 6 6-6"/></svg>';
+  var chevUp = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.4;flex-shrink:0;"><path d="m18 15-6-6-6 6"/></svg>';
+
+  // Sidebar scrollbar + item styles
+  var sbStyleId = 'typoJ-sb-style';
+  if (!document.getElementById(sbStyleId)) {
+    var sbs = document.createElement('style');
+    sbs.id = sbStyleId;
+    sbs.textContent = '.typoJ-sidebar::-webkit-scrollbar{width:3px}.typoJ-sidebar::-webkit-scrollbar-thumb{background:'+C.burg+';border-radius:2px}.typoJ-sidebar::-webkit-scrollbar-track{background:transparent}'
+      + '.typoJ-prod-item{margin:2px 8px;padding:8px 10px;background:'+C.bg+';border:1px solid rgba(255,255,255,.05);border-radius:3px;cursor:grab;display:flex;gap:8px;align-items:flex-start;transition:border-color .15s,transform .1s;user-select:none;position:relative;}'
+      + '.typoJ-prod-item:hover{border-color:rgba(125,30,63,.7);transform:translateX(2px);}'
+      + '.typoJ-prod-item:active{cursor:grabbing;opacity:.8;}'
+      + '.typoJ-prod-item.active{background:'+C.steel+';border-color:rgba(125,30,63,.5);}';
+    document.head.appendChild(sbs);
+  }
+
+  var modSubcats = ['Alle','Typ 440','Typ 110','Typ 1','Typ 990'];
+  var activeSubcat = 'Typ 440';
+
+  var html = '<div style="font-family:\'Manrope\',sans-serif;background:'+C.white+';border-radius:8px;overflow:hidden;border:1px solid '+C.gray2+';">';
+
+  // HEADER
+  html += '<div style="background:'+C.steel+';padding:20px 0;display:flex;align-items:center;">'
+    + '<div style="width:300px;flex-shrink:0;padding-left:28px;display:flex;align-items:center;">'
+    + '<img src="CHEFMODULE neu 15_12_25 weiss.png" style="height:26px;object-fit:contain;" onerror="this.outerHTML=\'<span style=font-size:17px;font-weight:700;color:#F2F2F2>CHEFMODULE</span>\'">'
+    + '</div>'
+    + '<div style="width:2px;height:26px;background:'+C.steel2+';flex-shrink:0;"></div>'
+    + '<div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;">'
+    + '<div style="display:flex;gap:24px;">'
+    + ['PRODUKTE','3D KONFIGURATOR','KNOW-HOW','DOWNLOADS','\u00dcBER UNS'].map(function(t,i){return '<a style="font-size:12px;font-weight:600;color:'+(i===0?C.txt:C.txtM)+';text-decoration:none;cursor:pointer;letter-spacing:.5px;'+(i===0?'border-bottom:1px solid '+C.burg+';padding-bottom:3px;':'')+'">'+t+'</a>';}).join('')
+    + '</div>'
+    + '<div style="display:flex;align-items:center;gap:14px;">'
+    + '<span style="color:'+C.txtM+';">'+ico.search+'</span>'
+    + '<span style="position:relative;color:'+C.txtM+';cursor:pointer;">'+ico.cart+'<span style="position:absolute;top:-5px;right:-7px;background:'+C.burg+';color:#fff;font-size:7px;font-weight:700;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;">2</span></span>'
+    + '<div style="width:1px;height:18px;background:'+C.steel2+';"></div>'
+    + '<a style="font-size:10px;font-weight:600;color:'+C.txtM+';text-decoration:none;cursor:pointer;letter-spacing:.3px;">LOGIN</a>'
+    + '</div></div></div>'
+    + '<div style="height:1px;background:'+C.burg+';margin-top:-10px;"></div><div style="height:9px;background:'+C.steel+';"></div>';
+
+  // MAIN LAYOUT
+  html += '<div style="height:1px;background:'+C.steel+';"></div>';
+  html += '<div style="display:flex;min-height:700px;">';
+
+  // SIDEBAR
+  html += '<div class="typoJ-sidebar" style="width:300px;background:'+C.steel+';border-right:1px solid rgba(255,255,255,.07);flex-shrink:0;overflow-y:auto;display:flex;flex-direction:column;">'
+    + '<div style="padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);">'
+    + '<div style="background:'+C.bg+';border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:7px 10px;font-size:11px;color:rgba(232,228,220,.25);display:flex;align-items:center;gap:6px;">'+ico.search+' Suchen...</div></div>'
+    + '<div style="background:'+C.bg+';border-bottom:1px solid rgba(255,255,255,.06);padding:8px 12px;font-size:10px;font-weight:600;color:'+C.txt+';letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-left:3px solid transparent;"><span>SCHIENEN BSF</span><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:9px;font-weight:400;opacity:.4;">8</span>'+chevDown+'</div></div>'
+    + '<div style="background:'+C.bg+';border-bottom:1px solid rgba(255,255,255,.06);padding:8px 12px;font-size:10px;font-weight:600;color:'+C.txt+';letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-left:3px solid transparent;"><span>SCHIENEN SF</span><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:9px;font-weight:400;opacity:.4;">8</span>'+chevDown+'</div></div>'
+    + '<div style="background:#1F1520;border-bottom:1px solid rgba(255,255,255,.06);padding:8px 12px;font-size:10px;font-weight:600;color:'+C.txt+';letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-left:3px solid '+C.burg+';position:sticky;top:0;z-index:10;"><span>MODULE</span><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:9px;font-weight:400;opacity:.4;">'+sidebarModules.length+'</span>'+chevUp+'</div></div>'
+    + '<div style="position:sticky;top:33px;z-index:9;background:#1F1520;padding:4px 8px;display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid rgba(125,30,63,.3);">'
+    + modSubcats.map(function(sc){var isAct=sc===activeSubcat;return '<div style="font-size:8px;padding:2px 8px;border:1px solid '+(isAct?C.burg:'rgba(255,255,255,.15)')+';border-radius:10px;background:'+(isAct?C.burg:'transparent')+';color:'+(isAct?'#fff':C.txt)+';cursor:pointer;letter-spacing:.05em;">'+sc+'</div>';}).join('')
+    + '</div>'
+    + sidebarModules.map(function(m){
+      var isActive=m.active;
+      return '<div class="typoJ-prod-item'+(isActive?' active':'')+'">'
+        + '<div style="width:56px;height:56px;background:'+C.bg+';border:1px solid rgba(255,255,255,.1);border-radius:2px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">'
+        + '<img src="'+xBase+m.img+'" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display=\'none\'"></div>'
+        + '<div style="min-width:0;"><div style="font-size:10px;font-weight:600;color:'+C.txt+';margin-bottom:1px;line-height:1.3;">'+m.name+'</div>'
+        + '<div style="font-size:8px;opacity:.35;color:'+C.txt+';">'+m.id+'</div></div>'
+        + (isActive?'<div style="width:6px;height:6px;background:#3fb950;border-radius:50%;margin-left:auto;align-self:center;"></div>':'')
+        + '</div>';
+    }).join('')
+    + '<div style="background:'+C.bg+';border-bottom:1px solid rgba(255,255,255,.06);padding:8px 12px;font-size:10px;font-weight:600;color:'+C.txt+';letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-left:3px solid transparent;margin-top:2px;"><span>MODULERWEITERUNGEN</span><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:9px;font-weight:400;opacity:.4;">12</span>'+chevDown+'</div></div>'
+    + '<div style="background:'+C.bg+';border-bottom:1px solid rgba(255,255,255,.06);padding:8px 12px;font-size:10px;font-weight:600;color:'+C.txt+';letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-left:3px solid transparent;"><span>POLE</span><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:9px;font-weight:400;opacity:.4;">9</span>'+chevDown+'</div></div>'
+    + '<div style="background:'+C.bg+';border-bottom:1px solid rgba(255,255,255,.06);padding:8px 12px;font-size:10px;font-weight:600;color:'+C.txt+';letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-left:3px solid transparent;"><span>ZUBEH\u00d6R</span><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:9px;font-weight:400;opacity:.4;">6</span>'+chevDown+'</div></div>'
+    + '</div>';
+
+  // CONTENT (scrollbar)
+  html += '<div style="flex:1;overflow-y:auto;">';
+
+  // PRODUKTLISTING
+  html += '<div style="padding:20px 28px;">';
+  html += '<div style="font-size:9px;font-weight:700;color:'+C.gray3+';text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid '+C.gray2+';">BEISPIEL: PRODUKTLISTING</div>';
+  html += '<div style="font-size:11px;color:'+C.gray3+';display:flex;align-items:center;gap:4px;margin-bottom:12px;">'
+    + '<a style="color:'+C.burg+';text-decoration:none;">Home</a>'+ico.chevRight
+    + '<a style="color:'+C.burg+';text-decoration:none;">Module</a>'+ico.chevRight
+    + '<span style="color:'+C.dark+';font-weight:600;">Typ 440</span></div>';
+
+  // Info banner
+  html += '<div id="typoJ-info-banner" style="background:'+C.gray1+';border:1px solid '+C.gray2+';border-radius:6px;padding:12px 16px;margin-bottom:16px;">'
+    + '<div style="font-size:11px;font-weight:700;color:'+C.dark+';margin-bottom:4px;">MODULE TYP 440</div>'
+    + '<div style="font-size:11px;color:#555;line-height:1.6;">Module vom Typ 440 werden zwischen zwei Schienen mit <strong>440 mm Lochabstand</strong> eingehangen. Sie passen auf alle Schienen 110 (BSF und SF).</div>'
+    + '<div style="margin-top:8px;"><span onclick="this.parentElement.parentElement.style.display=\'none\'" style="font-size:10px;color:'+C.burg+';cursor:pointer;text-decoration:underline;">Nicht mehr anzeigen</span> <span style="font-size:9px;color:'+C.gray3+';font-style:italic;margin-left:8px;">Ich kenne mich aus</span></div></div>';
+
+  // Product cards grid
+  var listingProducts = [
+    {name:'EP 440',id:'M044 0001',sub:'Typ 440',img:'030 Module/Typ 440/M044_0001/Bilder/M044 0001_P1_PH 440.png'},
+    {name:'Folienspender',id:'M044 0002',sub:'Typ 440',img:'030 Module/Typ 440/M044_0002/Bilder/M044 0002_P1_Folienspender.png',badge:'BESTSELLER'},
+    {name:'Gew\u00fcrzablage 440',id:'M044 0003',sub:'Typ 440',img:'030 Module/Typ 440/M044_0003/Bilder/M044 0003_P1_Gewuerzablage 440.png'},
+    {name:'Stabmagnet 440',id:'M044 0004',sub:'Typ 440',img:'030 Module/Typ 440/M044_0004/Bilder/M044 0004_P1_Stabmagnet 440.png'},
+    {name:'Bonschiene',id:'M044 0005',sub:'Typ 440',img:'030 Module/Typ 440/M044_0005/Bilder/M044 0005_P1_Bonschiene.png'},
+    {name:'Box-Modul 440',id:'M044 0007',sub:'Typ 440',img:'050 Box Module/M044_0007/Bilder/M044 0007_P1_Box-Modul 440.png'},
+  ];
+
+  html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">';
+  html += listingProducts.map(function(lp){
+    return '<div class="typoJ-card" style="background:'+C.white+';border:1px solid '+C.gray2+';border-radius:6px;overflow:hidden;cursor:pointer;transition:all .15s;position:relative;">'
+      + (lp.badge?'<div style="position:absolute;top:8px;left:8px;background:'+C.burg+';color:#fff;font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:.5px;z-index:1;">'+lp.badge+'</div>':'')
+      + '<div style="height:140px;background:'+C.gray1+';display:flex;align-items:center;justify-content:center;overflow:hidden;">'
+      + '<img src="'+xBase+lp.img+'" style="max-width:85%;max-height:85%;object-fit:contain;" onerror="this.style.display=\'none\'"></div>'
+      + '<div style="padding:10px 12px;"><div style="font-size:12px;font-weight:600;color:'+C.dark+';margin-bottom:2px;">'+lp.name+'</div>'
+      + '<div style="font-size:9px;color:'+C.gray3+';">'+lp.id+' \u00b7 '+lp.sub+'</div></div></div>';
+  }).join('') + '</div></div>';
+
+  // SEPARATOR
+  html += '<div style="border-top:2px solid '+C.gray2+';margin:0 28px;"></div>';
+
+  // DETAIL PAGE
+  html += '<div style="padding:20px 28px;">';
+  html += '<div style="font-size:9px;font-weight:700;color:'+C.gray3+';text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid '+C.gray2+';">BEISPIEL: PRODUKTDETAILSEITE</div>';
+  html += '<div style="font-size:11px;color:'+C.gray3+';display:flex;align-items:center;gap:4px;margin-bottom:16px;">'
+    + '<a style="color:'+C.burg+';text-decoration:none;">Home</a>'+ico.chevRight
+    + '<a style="color:'+C.burg+';text-decoration:none;">Module</a>'+ico.chevRight
+    + '<a style="color:'+C.burg+';text-decoration:none;">Box Module</a>'+ico.chevRight
+    + '<span style="color:'+C.dark+';font-weight:600;">Box-Modul 440</span></div>';
+
+  html += '<div style="display:flex;gap:24px;margin-bottom:24px;">'
+    + '<div style="width:320px;flex-shrink:0;">'
+    + '<div style="width:320px;height:260px;background:'+C.gray1+';border-radius:8px;display:flex;align-items:center;justify-content:center;border:1px solid '+C.gray2+';margin-bottom:8px;overflow:hidden;">'
+    + '<img src="'+prodImg.p1+'" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.outerHTML=\'<span style=color:#9E9E9E;font-size:12px>Produktbild</span>\'"></div>'
+    + '<div style="display:flex;gap:6px;">'
+    + [prodImg.p1,prodImg.x1,prodImg.x2].map(function(src,i){
+      return '<div style="width:60px;height:50px;background:'+C.gray1+';border-radius:6px;border:'+(i===0?'2px solid '+C.burg:'1px solid '+C.gray2)+';overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;">'
+        + '<img src="'+src+'" style="max-width:90%;max-height:90%;object-fit:contain;" onerror="this.style.display=\'none\'"></div>';
+    }).join('') + '</div></div>'
+    + '<div style="flex:1;">'
+    + '<div style="font-size:10px;font-weight:600;color:'+C.burg+';text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">CHEFMODULE</div>'
+    + '<h2 style="font-size:22px;font-weight:700;color:'+C.dark+';margin:0 0 6px;">Box-Modul 440</h2>'
+    + '<div style="font-size:11px;color:'+C.gray3+';margin-bottom:16px;">Art.Nr. M044 0007 | Box Module</div>'
+    + '<p style="font-size:12px;color:#555;line-height:1.6;margin:0 0 16px;">Zum Aufsetzen von vier Besteckboxen nebeneinander oder einer Box-Modul Ablage 440.</p>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">'
+    + '<button class="typoJ-btn" style="background:'+C.gray1+';color:'+C.dark+';border:1px solid '+C.gray2+';padding:10px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:\'Manrope\',sans-serif;transition:all .15s;"><span style="color:'+C.burg+';">'+ico.cart+'</span> In den Warenkorb</button>'
+    + '<button style="background:'+C.white+';color:'+C.burg+';border:2px solid '+C.burg+';padding:9px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:\'Manrope\',sans-serif;">'+ico.orbit+' + 3D KONFIGURATOR</button></div>'
+    + '<div style="display:flex;gap:8px;margin-bottom:16px;">'
+    + '<button class="typoJ-btn" style="background:'+C.gray1+';color:'+C.dark+';border:1px solid '+C.gray2+';padding:7px 12px;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:\'Manrope\',sans-serif;transition:all .15s;"><span style="color:'+C.burg+';">'+ico.mail+'</span> E-MAIL</button>'
+    + '<button class="typoJ-btn" style="background:'+C.gray1+';color:'+C.dark+';border:1px solid '+C.gray2+';padding:7px 12px;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:\'Manrope\',sans-serif;transition:all .15s;"><span style="color:'+C.burg+';">'+ico.download+'</span> PDF</button>'
+    + '<button class="typoJ-btn" style="background:'+C.gray1+';color:'+C.dark+';border:1px solid '+C.gray2+';padding:7px 12px;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:\'Manrope\',sans-serif;transition:all .15s;"><span style="color:'+C.burg+';">'+ico.ar+'</span> AR</button></div>'
+    + '<div style="display:flex;gap:14px;flex-wrap:wrap;">'
+    + pngBadges.map(function(ic){return '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:60px;"><img src="'+icoBase+ic.file+'" style="width:30px;height:30px;object-fit:contain;" onerror="this.style.display=\'none\'"><div style="font-size:7px;color:'+C.dark+';text-align:center;line-height:1.2;">'+ic.label+'</div></div>';}).join('')
+    + '</div></div></div>';
+
+  // Badges + Tabs + Description
+  html += '<div style="margin-bottom:20px;"><div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    + [['Edelstahl V2A','cart'],['Sp\u00fclmaschinenfest','download'],['Werkzeuglos','cube'],['Wandmontage','ar']].map(function(a){return '<div style="display:flex;align-items:center;gap:5px;background:'+C.white+';padding:6px 12px;border-radius:6px;font-size:11px;color:'+C.dark+';border:1px solid '+C.gray2+';"><span style="color:'+C.gray3+';">'+ico[a[1]]+'</span> '+a[0]+'</div>';}).join('')
+    + '</div></div>';
+
+  html += '<div style="display:flex;border-bottom:2px solid '+C.gray2+';margin-bottom:14px;">'
+    + '<div style="padding:8px 16px;font-size:11px;font-weight:700;color:'+C.burg+';border-bottom:2px solid '+C.burg+';margin-bottom:-2px;letter-spacing:.5px;text-transform:uppercase;">Beschreibung</div>'
+    + '<div style="padding:8px 16px;font-size:11px;font-weight:600;color:'+C.gray3+';letter-spacing:.5px;text-transform:uppercase;">Technische Daten</div>'
+    + '<div style="padding:8px 16px;font-size:11px;font-weight:600;color:'+C.gray3+';letter-spacing:.5px;text-transform:uppercase;">Lieferumfang</div></div>';
+
+  html += '<div style="font-size:12px;color:'+C.dark+';line-height:1.7;margin-bottom:20px;">'
+    + 'Zum Aufsetzen von vier Besteckboxen nebeneinander oder einer Box-Modul Ablage 440.<br>'
+    + 'Besteckbox als Zubeh\u00f6r erh\u00e4ltlich.</div>';
+
+  html += '</div>'; // end detail
+  html += '</div>'; // end content
+  html += '</div>'; // end layout
+
+  // FOOTER
+  html += '<div style="background:'+C.steel+';padding:20px 24px;border-top:1px solid '+C.steel2+';">'
+    + '<div style="display:flex;gap:36px;flex-wrap:wrap;margin-bottom:14px;">'
+    + '<div><div style="font-size:10px;font-weight:700;color:'+C.txt+';margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Service</div>'
+    + ['3D Konfigurator','Bohrschablonen','FAQ','Kontakt'].map(function(t){return '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:3px;">'+t+'</div>';}).join('')
+    + '</div>'
+    + '<div><div style="font-size:10px;font-weight:700;color:'+C.txt+';margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Kontakt</div>'
+    + '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:3px;">'+ico.mail+' info@chefmodule.com</div>'
+    + '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:3px;">'+ico.phone+' +49 123 456 789</div>'
+    + '<div style="font-size:10px;color:'+C.txtM+';margin-bottom:3px;">'+ico.pin+' Ballermann, Mallorca</div>'
+    + '</div></div>'
+    + '<div style="border-top:1px solid '+C.steel2+';padding-top:10px;display:flex;justify-content:space-between;font-size:9px;color:'+C.steel2+';">'
+    + '<span>\u00a9 2026 CHEFMODULE</span>'
+    + '<div style="display:flex;gap:10px;color:'+C.txtM+';">Impressum \u00b7 Datenschutz \u00b7 AGB</div></div></div>';
+
+  html += '</div>';
+  container.innerHTML = html;
+
+  // Hover effects
+  container.querySelectorAll('.typoJ-btn').forEach(function(el){
+    el.addEventListener('mouseenter',function(){el.style.borderColor=C.burg;el.style.background=C.gray2;});
+    el.addEventListener('mouseleave',function(){el.style.borderColor=C.gray2;el.style.background=C.gray1;});
+  });
+  container.querySelectorAll('.typoJ-card').forEach(function(el){
+    el.addEventListener('mouseenter',function(){el.style.borderColor=C.burg;el.style.boxShadow='0 4px 12px rgba(0,0,0,.08)';});
+    el.addEventListener('mouseleave',function(){el.style.borderColor=C.gray2;el.style.boxShadow='none';});
+  });
+
+  // Thumb zoom
+  var zoomEl = document.createElement('div');
+  zoomEl.id = 'typoJ-thumb-zoom';
+  zoomEl.style.cssText = 'position:fixed;width:224px;height:224px;background:#1A1D23;border:2px solid rgba(125,30,63,.7);border-radius:4px;z-index:9999;pointer-events:none;display:none;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.6);';
+  zoomEl.innerHTML = '<img style="width:100%;height:100%;object-fit:contain;">';
+  document.body.appendChild(zoomEl);
+
+  container.querySelectorAll('.typoJ-prod-item').forEach(function(item){
+    var thumbWrap = item.querySelector('div[style*="56px"]');
+    var thumb = item.querySelector('img');
+    if (!thumbWrap || !thumb) return;
+    thumbWrap.addEventListener('mouseenter', function(){
+      var zImg = zoomEl.querySelector('img');
+      if (zImg && thumb.src) { zImg.src = thumb.src; zoomEl.style.display = 'block'; }
+    });
+    thumbWrap.addEventListener('mousemove', function(e){
+      zoomEl.style.left = (e.clientX + 16) + 'px';
+      zoomEl.style.top = (e.clientY - 112) + 'px';
+    });
+    thumbWrap.addEventListener('mouseleave', function(){ zoomEl.style.display = 'none'; });
+  });
+}
+</script>
+</body>
+</html>
