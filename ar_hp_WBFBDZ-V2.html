@@ -19,10 +19,10 @@ model-viewer{width:100vw;height:100vh;--poster-color:#1A1D23}
 .ld-fill{height:100%;background:#B84060;width:0%;transition:width .2s}
 .ld-pct{font-size:14px;color:#999;margin-top:10px;letter-spacing:.04em;font-weight:600}
 .ld-txt{font-size:16px;color:#888;margin-top:8px;letter-spacing:.04em}
-.ar-btn{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);background:#B84060;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.06em;box-shadow:0 4px 16px rgba(184,64,96,.4);z-index:5}
+.ar-btn{position:absolute;bottom:calc(24% + 10vh);left:50%;transform:translateX(-50%);background:#B84060;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.06em;box-shadow:0 4px 16px rgba(184,64,96,.4);z-index:5}
 .ar-btn:active{transform:translateX(-50%) scale(.96)}
 .nfo{position:absolute;top:12%;left:50%;transform:translateX(-50%);text-align:center;font-size:24px;color:#999;line-height:1.6;z-index:4}
-.hint{position:absolute;bottom:3%;top:auto;left:50%;transform:translateX(-50%);width:90%;max-width:430px;max-height:38vh;overflow-y:auto;overscroll-behavior:contain;background:rgba(35,38,45,.95);border:1px solid rgba(192,80,111,.42);border-radius:12px;padding:14px 16px 13px;z-index:6;text-align:left}
+.hint{position:absolute;top:5%;left:50%;transform:translateX(-50%);width:90%;max-width:430px;max-height:46vh;overflow-y:auto;overscroll-behavior:contain;background:rgba(35,38,45,.95);border:1px solid rgba(192,80,111,.42);border-radius:12px;padding:14px 16px 13px;z-index:6;text-align:left}
 .hint h3{font-size:15px;font-weight:600;color:#F2F2F2;margin:0 0 6px}
 .hint .lead{font-size:12.5px;color:rgba(242,242,242,.55);line-height:1.5;margin:0 0 9px}
 .hint .warn{display:none;background:rgba(180,64,96,.28);border:1px solid rgba(226,75,74,.6);border-radius:8px;padding:9px 32px 9px 10px;font-size:12.5px;color:#fff;line-height:1.4;margin:0 0 10px}
@@ -57,7 +57,7 @@ model-viewer[ar-status="session-started"] .ar-wm,model-viewer[ar-status="object-
 </style>
 </head><body>
 <model-viewer
-  src="https://chefmodule-ar-upload.dawn-poetry-eb08.workers.dev/download/projekt_hp_WBFBDZ-V2.glb?v=1785764682487"
+  src="https://chefmodule-ar-upload.dawn-poetry-eb08.workers.dev/download/projekt_hp_WBFBDZ-V2.glb?v=1785766026948"
   ar ar-modes="webxr scene-viewer quick-look"
   ar-placement="wall"
   ar-scale="fixed"
@@ -120,7 +120,7 @@ if(!_ios&&_inapp)document.getElementById("hint-warn").style.display="block";
 document.getElementById("hint-x").addEventListener("click",function(){_hb.style.display="none";var n=document.getElementById("nfo");if(n&&!_isViewer&&mv.canActivateAR!==false)n.style.display="block"});
 if(_isViewer)_hb.style.display="none";
 })();
-if(_isViewer){mv.removeAttribute("ar");mv.removeAttribute("ar-modes");mv.removeAttribute("ar-placement");mv.removeAttribute("ar-scale");document.title="CHEFMODULE 3D Vorschau";document.getElementById("v-hdr").classList.add("show")}else{mv.removeAttribute("camera-controls");mv.removeAttribute("touch-action");mv.style.height="64vh";}
+if(_isViewer){mv.removeAttribute("ar");mv.removeAttribute("ar-modes");mv.removeAttribute("ar-placement");mv.removeAttribute("ar-scale");document.title="CHEFMODULE 3D Vorschau";document.getElementById("v-hdr").classList.add("show")}else{mv.removeAttribute("camera-controls");mv.removeAttribute("touch-action");mv.style.transform="translateY(10vh)";}
 document.getElementById("v-share").addEventListener("click",function(){navigator.clipboard.writeText(location.href).then(function(){var t=document.getElementById("v-toast");t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2000)})});
 mv.addEventListener("load",()=>{clearInterval(iv);showPct(100);modelReady=true;tryHideLoader();if(_isViewer){document.getElementById("nfo").style.display="none"}else if(!mv.canActivateAR){document.getElementById("desk").style.display="flex";document.getElementById("nfo").style.display="none"}});
 setTimeout(()=>{timerDone=true;tryHideLoader()},5000);
