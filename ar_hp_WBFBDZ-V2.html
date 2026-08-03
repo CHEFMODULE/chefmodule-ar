@@ -19,10 +19,10 @@ model-viewer{width:100vw;height:100vh;--poster-color:#1A1D23}
 .ld-fill{height:100%;background:#B84060;width:0%;transition:width .2s}
 .ld-pct{font-size:14px;color:#999;margin-top:10px;letter-spacing:.04em;font-weight:600}
 .ld-txt{font-size:16px;color:#888;margin-top:8px;letter-spacing:.04em}
-.ar-btn{position:absolute;bottom:28%;left:50%;transform:translateX(-50%);background:#B84060;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.06em;box-shadow:0 4px 16px rgba(184,64,96,.4);z-index:5}
+.ar-btn{position:absolute;bottom:44%;left:50%;transform:translateX(-50%);background:#B84060;color:#fff;border:none;padding:14px 32px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.06em;box-shadow:0 4px 16px rgba(184,64,96,.4);z-index:5}
 .ar-btn:active{transform:translateX(-50%) scale(.96)}
 .nfo{position:absolute;top:12%;left:50%;transform:translateX(-50%);text-align:center;font-size:24px;color:#999;line-height:1.6;z-index:4}
-.hint{position:absolute;top:5%;left:50%;transform:translateX(-50%);width:90%;max-width:430px;background:rgba(35,38,45,.95);border:1px solid rgba(192,80,111,.42);border-radius:12px;padding:14px 16px 13px;z-index:6;text-align:left}
+.hint{position:absolute;bottom:3%;top:auto;left:50%;transform:translateX(-50%);width:90%;max-width:430px;max-height:38vh;overflow-y:auto;overscroll-behavior:contain;background:rgba(35,38,45,.95);border:1px solid rgba(192,80,111,.42);border-radius:12px;padding:14px 16px 13px;z-index:6;text-align:left}
 .hint h3{font-size:15px;font-weight:600;color:#F2F2F2;margin:0 0 6px}
 .hint .lead{font-size:12.5px;color:rgba(242,242,242,.55);line-height:1.5;margin:0 0 9px}
 .hint .warn{display:none;background:rgba(180,64,96,.28);border:1px solid rgba(226,75,74,.6);border-radius:8px;padding:9px 32px 9px 10px;font-size:12.5px;color:#fff;line-height:1.4;margin:0 0 10px}
@@ -57,7 +57,7 @@ model-viewer[ar-status="session-started"] .ar-wm,model-viewer[ar-status="object-
 </style>
 </head><body>
 <model-viewer
-  src="https://chefmodule-ar-upload.dawn-poetry-eb08.workers.dev/download/projekt_hp_WBFBDZ-V2.glb?v=1785763110002"
+  src="https://chefmodule-ar-upload.dawn-poetry-eb08.workers.dev/download/projekt_hp_WBFBDZ-V2.glb?v=1785764367936"
   ar ar-modes="webxr scene-viewer quick-look"
   ar-placement="wall"
   ar-scale="fixed"
@@ -92,8 +92,8 @@ model-viewer[ar-status="session-started"] .ar-wm,model-viewer[ar-status="object-
   <div class="warn" id="hint-warn">Diese Seite bitte in <svg viewBox="0 0 24 24" width="13" height="13" fill="#8AB4F8" style="vertical-align:-2px;flex-shrink:0"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg><b style="font-weight:700;color:#F2F2F2">&nbsp;Chrome</b> öffnen — im App-Browser startet AR nicht.</div>
   <h3 id="hint-title"></h3>
   <div class="lead">AR heißt: Dein Aufbau erscheint in Originalgröße über die Handy-Kamera bei dir vor Ort.</div>
-  <div id="hint-ios"><ol style="margin:0 0 8px;padding-left:18px;color:rgba(242,242,242,0.82);font-size:13.5px;line-height:1.75"><li style="margin-bottom:5px">Auf „AR starten“ tippen (Würfel-Symbol) — keine App nötig.</li><li style="margin-bottom:5px">Handy langsam über die Wand schwenken, bis die Fläche erkannt ist — antippen zum Platzieren.</li><li style="margin-bottom:5px">Kurz Geduld: Das Modell erscheint evtl. klein und wächst auf Originalgröße — zurücktreten, dann herumgehen.</li></ol><div style="font-size:12.5px;color:rgba(242,242,242,0.45);font-style:italic;line-height:1.5">Voraussetzung: iOS 12 oder neuer, Kamerazugriff erlauben.</div></div>
-  <div id="hint-and" style="display:none"><ol style="margin:0 0 8px;padding-left:18px;color:rgba(242,242,242,0.82);font-size:13.5px;line-height:1.75"><li style="margin-bottom:5px">Auf „AR starten“ tippen (Würfel-Symbol).</li><li style="margin-bottom:5px">Einmalig „Google Play-Dienste für AR“ erlauben bzw. installieren.</li><li style="margin-bottom:5px">Handy langsam über die Wand bewegen, antippen zum Platzieren. Kurz Geduld: Modell wächst auf Originalgröße — zurücktreten, dann herumgehen.</li></ol><div style="font-size:12.5px;color:rgba(242,242,242,0.45);font-style:italic;line-height:1.5">Voraussetzung: ARCore-fähiges Gerät, Kamerazugriff erlauben.</div></div>
+  <div id="hint-ios"><ol style="margin:0 0 8px;padding-left:18px;color:rgba(242,242,242,0.82);font-size:13.5px;line-height:1.75"><li style="margin-bottom:5px">Auf „AR starten“ tippen — keine App nötig.</li><li style="margin-bottom:5px">Handy langsam über die Wand schwenken, bis die Fläche erkannt ist — antippen zum Platzieren.</li><li style="margin-bottom:5px">Kurz Geduld: Das Modell erscheint evtl. klein und wächst auf Originalgröße — zurücktreten, dann herumgehen.</li></ol><div style="font-size:12.5px;color:rgba(242,242,242,0.45);font-style:italic;line-height:1.5">Voraussetzung: iOS 12 oder neuer, Kamerazugriff erlauben.</div></div>
+  <div id="hint-and" style="display:none"><ol style="margin:0 0 8px;padding-left:18px;color:rgba(242,242,242,0.82);font-size:13.5px;line-height:1.75"><li style="margin-bottom:5px">Auf „AR starten“ tippen.</li><li style="margin-bottom:5px">Einmalig „Google Play-Dienste für AR“ erlauben bzw. installieren.</li><li style="margin-bottom:5px">Handy langsam über die Wand bewegen, antippen zum Platzieren. Kurz Geduld: Modell wächst auf Originalgröße — zurücktreten, dann herumgehen.</li></ol><div style="font-size:12.5px;color:rgba(242,242,242,0.45);font-style:italic;line-height:1.5">Voraussetzung: ARCore-fähiges Gerät, Kamerazugriff erlauben.</div></div>
 </div>
 <div class="desk" id="desk">
   <div style="font-size:48px;margin-bottom:16px">&#128241;</div>
